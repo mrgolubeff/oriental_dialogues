@@ -1,5 +1,6 @@
 import asyncio
 import os
+from pathlib import Path
 
 import requests
 from aiogram import Bot, Dispatcher, types
@@ -53,7 +54,9 @@ def register_handlers(dp: Dispatcher):
 
 
 async def startup() -> None:
-    config = load_config('bot.ini')
+    data_folder = Path('')
+    file_to_open = data_folder / 'bot.ini'
+    config = load_config(file_to_open)
     admin_id = config.tg_bot.admin_id
     bot = Bot(token=config.tg_bot.token)
     dp = Dispatcher()
