@@ -130,3 +130,4 @@ dmypy.json
 
 # .ini file
 bot.ini
+ini_source/
