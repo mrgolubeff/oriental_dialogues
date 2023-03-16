@@ -54,7 +54,7 @@ def register_handlers(dp: Dispatcher):
 
 
 async def startup() -> None:
-    data_folder = Path('')
+    data_folder = Path('ini_source')
     file_to_open = data_folder / 'bot.ini'
     config = load_config(file_to_open)
     admin_id = config.tg_bot.admin_id
