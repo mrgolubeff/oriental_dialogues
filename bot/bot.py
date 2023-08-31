@@ -2,7 +2,7 @@ import asyncio
 import os
 from pathlib import Path
 
-import requests
+import aiohttp
 from aiogram import Bot, Dispatcher, types
 from aiogram.filters.command import Command
 from aiogram.filters.text import Text
@@ -13,9 +13,11 @@ from quotes import QUOTES
 
 
 async def give_wisdom(m: types.Message):
-    response = requests.get('https://api.quotable.io/random').json()
-    quote = response.get('content')
-    author = response.get('author')
+    async with aiohttp.ClientSession() as session:
+        async with session.get('https://swapi.dev/api/people/1') as response:
+            json_response = await response.json()
+            quote = json_response.get('content')
+            author = json_response.get('author')
 
     await m.answer(
         f'\"{quote}\"\n- {author}'
