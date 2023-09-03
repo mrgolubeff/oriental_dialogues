@@ -7,9 +7,27 @@ from aiogram import Bot, Dispatcher, types
 from aiogram.filters.command import Command
 from aiogram.filters.text import Text
 from aiogram.fsm.storage.memory import MemoryStorage
+from aiogram.filters.state import StatesGroup, State
+
+from aiogram_dialog import Window, Dialog
+from aiogram_dialog.widgets.kbd import Button
+from aiogram_dialog.widgets.text import Const
 
 from config_reader import load_config
 from quotes import QUOTES
+
+
+class AddQuote(StatesGroup):
+    add_quote = State()
+    add_author = State()
+    confirm_quote = State()
+
+
+add_quote_window = Window(
+    Const('Введите цитату:'),
+    Button(Const('Отмена'), id='cancel'),
+    state=AddQuote.add_quote,
+)
 
 
 async def give_wisdom(m: types.Message):
@@ -60,6 +78,7 @@ async def startup() -> None:
     file_to_open = data_folder / 'bot.ini'
     config = load_config(file_to_open)
     admin_id = config.tg_bot.admin_id
+    storage = MemoryStorage()
     bot = Bot(token=config.tg_bot.token)
     dp = Dispatcher()
     register_handlers(dp)
